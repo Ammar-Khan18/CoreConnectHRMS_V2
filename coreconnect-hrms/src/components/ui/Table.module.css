@@ -1,0 +1,49 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.header {
+  background-color: var(--surface-color);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.body {
+  /* No specific styles needed usually */
+}
+
+.row {
+  border-bottom: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:hover {
+  background-color: var(--surface-color);
+}
+
+.head {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.cell {
+  padding: 1rem;
+  color: var(--text-primary);
+  vertical-align: middle;
+}
