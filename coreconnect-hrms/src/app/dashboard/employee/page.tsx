@@ -3,24 +3,35 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Clock, Calendar, CheckCircle, FileText } from 'lucide-react';
 import styles from './page.module.css';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
+import { ClockInWidget } from './ClockInWidget';
 
-export default function EmployeeDashboardPage() {
+export default async function EmployeeDashboardPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login');
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('first_name')
+    .eq('id', user.id)
+    .single();
+
+  const firstName = profile?.first_name || 'Employee';
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.title}>Good Morning, Alex!</h1>
+          <h1 className={styles.title}>Good Morning, {firstName}!</h1>
           <p className={styles.subtitle}>Here is your daily summary and tasks.</p>
         </div>
-        <div className={styles.checkInBox}>
-          <div className={styles.timeInfo}>
-            <span className={styles.timeLabel}>Current Time</span>
-            <span className={styles.currentTime}>09:00 AM</span>
-          </div>
-          <Button variant="primary" className={styles.checkInBtn}>
-            <Clock size={18} /> Clock In Now
-          </Button>
-        </div>
+        <ClockInWidget />
       </div>
 
       <div className={styles.grid}>
@@ -34,7 +45,9 @@ export default function EmployeeDashboardPage() {
                 <h3>Upcoming Leaves</h3>
                 <p>No upcoming approvals</p>
               </div>
-              <Button variant="outline" size="sm">Request Leave</Button>
+              <Link href="/dashboard/employee/leave">
+                <Button variant="outline" size="sm">Request Leave</Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -47,7 +60,9 @@ export default function EmployeeDashboardPage() {
                 <h3>Pending Tasks</h3>
                 <p>2 courses pending completion</p>
               </div>
-              <Button variant="outline" size="sm">View Tasks</Button>
+              <Link href="/dashboard/employee/helpdesk">
+                <Button variant="outline" size="sm">View Tasks</Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -60,7 +75,9 @@ export default function EmployeeDashboardPage() {
                 <h3>Latest Payslip</h3>
                 <p>September 2026 added</p>
               </div>
-              <Button variant="outline" size="sm">Download</Button>
+              <Link href="/dashboard/hr/payroll">
+                <Button variant="outline" size="sm">Download</Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

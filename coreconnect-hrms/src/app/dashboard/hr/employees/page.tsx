@@ -4,15 +4,38 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
 import { Button } from '@/components/ui/Button';
 import { Plus, Search, MoreHorizontal } from 'lucide-react';
 import styles from './page.module.css';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
-export default function EmployeeListPage() {
-  const employees = [
-    { id: 'EMP-001', name: 'Ammar Khan', role: 'System Admin', dept: 'IT', status: 'Active' },
-    { id: 'EMP-002', name: 'Sarah Jenkins', role: 'HR Manager', dept: 'Human Resources', status: 'Active' },
-    { id: 'EMP-003', name: 'Alex Chen', role: 'Software Engineer', dept: 'Engineering', status: 'Onboarding' },
-    { id: 'EMP-004', name: 'Maria Garcia', role: 'Marketing Lead', dept: 'Marketing', status: 'Active' },
-    { id: 'EMP-005', name: 'James Doe', role: 'Sales rep', dept: 'Sales', status: 'Inactive' },
-  ];
+export default async function EmployeeListPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) redirect('/login');
+
+  const { data: userProfile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (userProfile?.role !== 'HR' && userProfile?.role !== 'Admin') {
+    redirect('/unauthorized');
+  }
+  
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  const employees = profiles?.map((p, index) => ({
+    id: `EMP-${(index + 1).toString().padStart(3, '0')}`,
+    name: `${p.first_name} ${p.last_name}`,
+    role: p.role || 'Employee',
+    dept: p.department || 'Unassigned',
+    status: p.status || 'Active'
+  })) || [];
 
   return (
     <div className={styles.container}>
@@ -21,9 +44,11 @@ export default function EmployeeListPage() {
           <h1 className={styles.title}>Employees Data</h1>
           <p className={styles.subtitle}>Manage your organization's workforce here.</p>
         </div>
-        <Button className={styles.addButton}>
-          <Plus size={18} className={styles.btnIcon} /> Add Employee
-        </Button>
+        <Link href="/dashboard/hr/employees/new">
+          <Button className={styles.addButton}>
+            <Plus size={18} className={styles.btnIcon} /> Add Employee
+          </Button>
+        </Link>
       </div>
 
       <Card>

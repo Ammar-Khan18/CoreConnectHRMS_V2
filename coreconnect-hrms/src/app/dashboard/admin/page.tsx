@@ -2,10 +2,35 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Users, Briefcase, Calendar, TrendingUp } from 'lucide-react';
 import styles from './page.module.css';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
-export default function AdminDashboardPage() {
+export default async function AdminDashboardPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login');
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('first_name, role')
+    .eq('id', user.id)
+    .single();
+
+  if (profile?.role !== 'Admin') {
+    redirect('/unauthorized');
+  }
+
+  const firstName = profile?.first_name || 'Admin';
+
+  const { count: totalEmployees } = await supabase
+    .from('profiles')
+    .select('*', { count: 'exact', head: true });
+
   const stats = [
-    { title: 'Total Employees', value: '1,248', desc: '+12% from last month', icon: Users, color: '#0b5cff' },
+    { title: 'Total Employees', value: totalEmployees?.toString() || '0', desc: 'Active workforce', icon: Users, color: '#0b5cff' },
     { title: 'Active Jobs', value: '42', desc: '5 new roles opened', icon: Briefcase, color: '#10b981' },
     { title: 'Leave Requests', value: '18', desc: 'Needs approval', icon: Calendar, color: '#f59e0b' },
     { title: 'Performance Avg', value: '4.8/5', desc: 'Q3 Reviews', icon: TrendingUp, color: '#8b5cf6' },
@@ -16,7 +41,7 @@ export default function AdminDashboardPage() {
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Admin Overview</h1>
-          <p className={styles.subtitle}>Welcome back, Ammar. Here's what's happening today.</p>
+          <p className={styles.subtitle}>Welcome back, {firstName}. Here's what's happening today.</p>
         </div>
       </div>
 

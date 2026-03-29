@@ -12,15 +12,22 @@ export async function login(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { data: authData, error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
     console.error('Login error:', error.message)
     redirect(`/login?error=${encodeURIComponent(error.message)}`)
   }
 
+  let redirectPath = '/dashboard/employee'
+  if (authData.user) {
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', authData.user.id).single()
+    if (profile?.role === 'Admin') redirectPath = '/dashboard/admin'
+    if (profile?.role === 'HR') redirectPath = '/dashboard/hr/employees'
+  }
+
   revalidatePath('/', 'layout')
-  redirect('/dashboard/employee')
+  redirect(redirectPath)
 }
 
 export async function signup(formData: FormData) {
@@ -38,15 +45,22 @@ export async function signup(formData: FormData) {
     }
   }
 
-  const { error } = await supabase.auth.signUp(data)
+  const { data: authData, error } = await supabase.auth.signUp(data)
 
   if (error) {
     console.error('Signup error:', error.message)
     redirect(`/login?mode=signup&error=${encodeURIComponent(error.message)}`)
   }
 
+  let redirectPath = '/dashboard/employee'
+  if (authData.user) {
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', authData.user.id).single()
+    if (profile?.role === 'Admin') redirectPath = '/dashboard/admin'
+    if (profile?.role === 'HR') redirectPath = '/dashboard/hr/employees'
+  }
+
   revalidatePath('/', 'layout')
-  redirect('/dashboard/employee')
+  redirect(redirectPath)
 }
 
 export async function signout() {
