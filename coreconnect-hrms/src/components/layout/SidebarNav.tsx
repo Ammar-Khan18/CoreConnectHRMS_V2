@@ -11,6 +11,7 @@ const navItems = [
   { href: '/dashboard/employee/attendance', label: 'My Attendance', icon: Clock, role: 'all' },
   { href: '/dashboard/employee/leave', label: 'My Leaves', icon: Calendar, role: 'all' },
   { href: '/dashboard/hr/employees', label: 'Manage Employees', icon: Users, role: 'hr' },
+  { href: '/dashboard/hr/leaves', label: 'Leave Requests', icon: Calendar, role: 'hr' },
   { href: '/dashboard/hr/payroll', label: 'Payroll', icon: Briefcase, role: 'hr' },
   { href: '/dashboard/announcements', label: 'Announcements', icon: FileText, role: 'all' },
   { href: '/dashboard/admin', label: 'Admin Settings', icon: Settings, role: 'admin' },
@@ -33,7 +34,8 @@ export function SidebarNav({ userRole }: { userRole: string }) {
       <ul className={styles.navList}>
         {filteredNavItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+          const isExactOnly = item.href === '/dashboard/employee';
+          const isActive = isExactOnly ? pathname === item.href : (pathname === item.href || pathname.startsWith(`${item.href}/`));
           return (
             <li key={item.href}>
               <Link 
