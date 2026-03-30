@@ -12,7 +12,7 @@ const navItems = [
   { href: '/dashboard/employee/leave', label: 'My Leaves', icon: Calendar, role: 'all' },
   { href: '/dashboard/hr/employees', label: 'Manage Employees', icon: Users, role: 'hr' },
   { href: '/dashboard/hr/payroll', label: 'Payroll', icon: Briefcase, role: 'hr' },
-  { href: '/dashboard/hr/announcements', label: 'Announcements', icon: FileText, role: 'hr' },
+  { href: '/dashboard/announcements', label: 'Announcements', icon: FileText, role: 'all' },
   { href: '/dashboard/admin', label: 'Admin Settings', icon: Settings, role: 'admin' },
   { href: '/dashboard/employee/helpdesk', label: 'Helpdesk', icon: HelpCircle, role: 'all' },
 ];

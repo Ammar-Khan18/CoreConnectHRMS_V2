@@ -172,3 +172,19 @@
   font-size: 0.75rem;
   color: var(--text-secondary);
 }
+
+.viewAllLink {
+  display: block;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  border-top: 1px solid var(--border-color);
+  transition: background-color 0.2s;
+}
+
+.viewAllLink:hover {
+  background-color: #f9fafb;
+  text-decoration: none;
+}

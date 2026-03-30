@@ -24,6 +24,22 @@ export default async function EmployeeDashboardPage() {
 
   const firstName = profile?.first_name || 'Employee';
 
+  const { data: latestAnnouncements } = await supabase
+    .from('announcements')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(3);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (diffInDays === 0) return 'Today';
+    if (diffInDays === 1) return 'Yesterday';
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -89,17 +105,31 @@ export default async function EmployeeDashboardPage() {
               <span className={styles.badge}>New</span>
             </div>
             <div className={styles.announcementList}>
-              <div className={styles.announcementItem}>
-                <h4>Annual Company Retreat</h4>
-                <p>Join us for the annual retreat in November. Please RSVP by Oct 15th.</p>
-                <span className={styles.date}>Today</span>
-              </div>
-              <div className={styles.announcementItem}>
-                <h4>New Health Insurance Policy</h4>
-                <p>We've updated our benefits. Make sure to review the new policy documents.</p>
-                <span className={styles.date}>Yesterday</span>
-              </div>
+              {latestAnnouncements && latestAnnouncements.length > 0 ? (
+                latestAnnouncements.map((ann) => (
+                  <div key={ann.id} className={styles.announcementItem}>
+                    <h4>{ann.title}</h4>
+                    <p style={{ 
+                      display: '-webkit-box', 
+                      WebkitLineClamp: 2, 
+                      WebkitBoxOrient: 'vertical', 
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis' 
+                    }}>
+                      {ann.body}
+                    </p>
+                    <span className={styles.date}>{formatDate(ann.created_at)}</span>
+                  </div>
+                ))
+              ) : (
+                <div style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>
+                  <p style={{ fontSize: '0.875rem' }}>No announcements yet.</p>
+                </div>
+              )}
             </div>
+            <Link href="/dashboard/announcements" className={styles.viewAllLink}>
+              View All Announcements
+            </Link>
           </Card>
         </div>
       </div>
