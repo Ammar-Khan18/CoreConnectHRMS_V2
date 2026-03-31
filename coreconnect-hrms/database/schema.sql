@@ -26,15 +26,32 @@ CREATE TABLE IF NOT EXISTS profiles (
   status employee_status DEFAULT 'Active',
   department TEXT,
   designation TEXT,
+  base_salary DECIMAL DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
--- Disable Row Level Security
-ALTER TABLE profiles DISABLE ROW LEVEL SECURITY;
-
 -- Note: We have disabled row level security and removed restrictive policies 
 -- to allow the application to easily accept user profiles without security conflicts.
+ALTER TABLE profiles DISABLE ROW LEVEL SECURITY;
+
+-- 2. Payslips Table for Payroll System
+CREATE TABLE IF NOT EXISTS payslips (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  month INTEGER NOT NULL CHECK (month >= 1 AND month <= 12),
+  year INTEGER NOT NULL,
+  base_pay DECIMAL NOT NULL DEFAULT 0,
+  tax_deduction DECIMAL NOT NULL DEFAULT 0,
+  bonus DECIMAL NOT NULL DEFAULT 0,
+  net_pay DECIMAL NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'Pending', -- Pending, Paid, Cancelled
+  paid_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE(user_id, month, year) -- Prevent duplicate payslips for same user/month/year
+);
+
+ALTER TABLE payslips DISABLE ROW LEVEL SECURITY;
 
 -- Replace the function to be more fault tolerant against null meta data
 CREATE OR REPLACE FUNCTION public.handle_new_user()

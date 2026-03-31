@@ -1,0 +1,218 @@
+.wrapper {
+  padding: 1.5rem;
+}
+
+.listHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.statusBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pending {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.paid {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  text-align: center;
+  gap: 1rem;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Modal Styling */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  width: 90%;
+  max-width: 650px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modalHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.headerInfo h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.headerInfo .statusBadge {
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 6px;
+}
+
+.closeBtn:hover {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.payslipBody {
+  padding: 2rem;
+}
+
+.employeeInfo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.infoBlock label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.infoBlock p {
+  margin: 0;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.financeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #4f46e5;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.5rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 0.75rem;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #e2e8f0;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.finalPay {
+  background-color: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.netLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.netAmount {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #059669;
+}
+
+.modalFooter {
+  padding: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@media print {
+  .modalOverlay {
+    position: absolute;
+    background: white;
+    backdrop-filter: none;
+  }
+  .modalFooter, .closeBtn {
+    display: none;
+  }
+  .modalContent {
+    box-shadow: none;
+    width: 100%;
+    max-width: none;
+  }
+}

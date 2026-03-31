@@ -91,8 +91,8 @@ export default async function EmployeeDashboardPage() {
                 <h3>Latest Payslip</h3>
                 <p>September 2026 added</p>
               </div>
-              <Link href="/dashboard/hr/payroll">
-                <Button variant="outline" size="sm">Download</Button>
+              <Link href="/dashboard/employee/payslips">
+                <Button variant="outline" size="sm">View All</Button>
               </Link>
             </CardContent>
           </Card>

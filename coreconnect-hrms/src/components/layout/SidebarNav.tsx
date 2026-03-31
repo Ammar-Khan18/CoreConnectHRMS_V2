@@ -10,6 +10,7 @@ const navItems = [
   { href: '/dashboard/employee', label: 'My Dashboard', icon: Home, role: 'all' },
   { href: '/dashboard/employee/attendance', label: 'My Attendance', icon: Clock, role: 'all' },
   { href: '/dashboard/employee/leave', label: 'My Leaves', icon: Calendar, role: 'all' },
+  { href: '/dashboard/employee/payslips', label: 'My Payslips', icon: Briefcase, role: 'all' },
   { href: '/dashboard/hr/employees', label: 'Manage Employees', icon: Users, role: 'hr' },
   { href: '/dashboard/hr/leaves', label: 'Leave Requests', icon: Calendar, role: 'hr' },
   { href: '/dashboard/hr/payroll', label: 'Payroll', icon: Briefcase, role: 'hr' },
