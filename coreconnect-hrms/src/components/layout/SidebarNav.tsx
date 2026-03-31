@@ -16,7 +16,8 @@ const navItems = [
   { href: '/dashboard/hr/payroll', label: 'Payroll', icon: Briefcase, role: 'hr' },
   { href: '/dashboard/announcements', label: 'Announcements', icon: FileText, role: 'all' },
   { href: '/dashboard/admin', label: 'Admin Settings', icon: Settings, role: 'admin' },
-  { href: '/dashboard/employee/helpdesk', label: 'Helpdesk', icon: HelpCircle, role: 'all' },
+  { href: '/dashboard/employee/helpdesk', label: 'My Helpdesk', icon: HelpCircle, role: 'employee' },
+  { href: '/dashboard/hr/helpdesk', label: 'Ticket Management', icon: HelpCircle, role: 'hr' },
 ];
 
 export function SidebarNav({ userRole }: { userRole: string }) {
@@ -27,6 +28,7 @@ export function SidebarNav({ userRole }: { userRole: string }) {
     if (item.role === 'all') return true;
     if (userRole === 'Admin') return true; // Admins see everything
     if (userRole === 'HR' && item.role === 'hr') return true;
+    if (userRole === 'Employee' && item.role === 'employee') return true;
     return false;
   });
 
