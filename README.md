@@ -44,6 +44,24 @@
 
 ---
 
+## 📂 Directory Structure
+
+```text
+CoreConnectHRMS_V2/
+├── coreconnect-hrms/          # Main Next.js application
+│   ├── src/
+│   │   ├── app/               # Next.js App Router (Pages & API)
+│   │   │   ├── dashboard/     # Role-specific dashboards (Admin, HR, Employee)
+│   │   │   ├── login/         # Authentication views
+│   │   │   └── layout.tsx     # Root layout & providers
+│   │   ├── components/        # Reusable UI components
+│   │   └── utils/             # Supabase client & helper functions
+│   └── public/                # Static assets (images, icons)
+└── SRS_CoreConnect.pdf        # Software Requirements Specification document
+```
+
+---
+
 ## ⚙️ Getting Started
 
 ### Prerequisites
@@ -65,14 +83,17 @@
    ```
 
 3. **Environment Setup**:
-   Create a `.env.local` file in this directory and add your Supabase credentials:
+   Create a `.env.local` file in the `coreconnect-hrms` directory and add your Supabase credentials:
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your-project-url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
    SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
    ```
 
-4. **Run the development server**:
+4. **Database Configuration**:
+   The database schema (tables, RLS policies, functions) must be configured in your Supabase project. Key tables include `user_profiles`, `attendance_records`, `leave_requests`, `announcements`, `payslips`, and `help_desk_tickets`.
+
+5. **Run the development server**:
    ```bash
    npm run dev
    ```
